@@ -1,0 +1,99 @@
+<!--Program will only work for images of same pixel size-->
+<html>
+<head>
+<title>Green Screen Algorithm</title>
+<script>
+var imgFG = null;
+var imgBG = null;
+var greenThreshold=240;
+function uploadFG()
+{
+  var fileInput = document.getElementById("fgFile");
+  var canvas = document.getElementById("canvas1");
+  imgFG = new SimpleImage(fileInput);
+  imgFG.drawTo(canvas);
+}
+
+function uploadBG()
+{
+  var fileInput = document.getElementById("bgFile");
+  var canvas = document.getElementById("canvas2");
+  imgBG = new SimpleImage(fileInput);
+  imgBG.drawTo(canvas);
+}
+
+function composite()
+{
+  clearCanvases();
+  var canvas1 = document.getElementById("canvas1");
+  var outputImage = new SimpleImage(imgFG.width, imgFG.height);//has to be same height and width
+  for (var pixel of imgFG.values())
+    {
+      if (pixel.getGreen() > greenThreshold)
+        {
+          var x = pixel.getX();
+          var y = pixel.getY();//get the same x and y coordinate in the background image
+          var newPixel = imgBG.getPixel(x, y);
+          outputImage.setPixel(x, y, newPixel);
+        }
+      else
+        {
+          outputImage.setPixel(pixel.getX(), pixel.getY(), pixel);//else set pixel to normal fgpixel
+        }
+    }
+  outputImage.drawTo(canvas1);//draw the output image on canvas 1
+
+}
+
+function clearCanvases()
+{
+  var canvas1 = document.getElementById("canvas1");
+  var canvas2 = document.getElementById("canvas2");
+  var context = canvas1.getContext("2d");
+  context.clearRect(0, 0, canvas1.width, canvas1.height);//access context of the canvas
+  context = canvas2.getContext("2d");
+  context.clearRect(0, 0, canvas2.width, canvas2.height);
+}
+</script>
+<style>
+body{
+  background-color: lightblue;
+  font-family: Arial;
+  margin:50px
+}
+div{
+  border-top-style:solid;
+  border-bottom-style:solid;
+  border-color: DodgerBlue;
+  text-align:center;
+  font-family:Impact;
+}
+h1{
+  font-family:Arial;
+}
+canvas
+{
+  background:white;
+  border: 2px solid DodgerBlue;
+  width:450px;
+  height:300px;
+}
+</style>
+</head>
+<body>
+<script src="https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js"></script>
+
+<div><h1>Green Screen Algorithm</h1></div>
+</br>
+</br>
+<canvas id="canvas1"></canvas> <canvas id="canvas2"></canvas>
+</br>
+<p><b>NOTE:</b><em> Make sure the foreground image and background image have the same height and width</em><p>
+<p>Enter the image with green screen as the foreground image <p>
+<p>Forground Image: <input type="file" id="fgFile" accept="image/*" multiple="false" onchange="uploadFG()"></p>
+<p>Enter the image with which you want to replace the green screen with as background image <p>
+<p>Background Image: <input type="file" id="bgFile" accept="image/*" multiple="false" onchange="uploadBG()"></p>
+<input type="button" value="Composite" onClick="composite()">
+<input type="button" value="Clear Canvases" onClick="clearCanvases()">
+</body>
+</html>

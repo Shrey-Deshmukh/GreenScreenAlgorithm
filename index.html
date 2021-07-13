@@ -1,0 +1,31 @@
+<!--Program will only work for images of same pixel size-->
+<html>
+<head>
+<title>Green Screen Algorithm</title>
+
+<script>
+</script>
+
+<link rel="stylesheet" type="text/css" href="greenscreenalgo_external_css.css">
+
+</head>
+<body>
+<script src="https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js"></script>
+
+<div><h1>Green Screen Algorithm</h1></div>
+</br>
+</br>
+<canvas id="canvas1"></canvas> <canvas id="canvas2"></canvas>
+</br>
+<p><b>NOTE:</b><em> Make sure the foreground image and background image have the same height and width</em><p>
+<p>Enter the image with green screen as the foreground image <p>
+<p>Forground Image: <input type="file" id="fgFile" accept="image/*" multiple="false" onchange="uploadFG()"></p>
+<p>Enter the image with which you want to replace the green screen with as background image <p>
+<p>Background Image: <input type="file" id="bgFile" accept="image/*" multiple="false" onchange="uploadBG()"></p>
+<input type="button" value="Composite" onClick="composite()">
+<input type="button" value="Clear Canvases" onClick="clearCanvases()">
+
+<script type="text/javascript" src="greenscreenalgo_external_js.js"></script>
+
+</body>
+</html>
